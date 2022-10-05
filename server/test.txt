@@ -1,0 +1,42 @@
+1)Crypto userId Test: 
+Puth the following code inside the index.js f
+
+const crypto = require('crypto');
+
+app.get('/test', (req, res) => {
+    const userId = crypto.randomBytes(16).toString('hex');
+    res.send(userId);
+});
+
+2)Bcrypt hashedPassword Test:
+const bcrypt = require('bcrypt');
+
+app.get('/test', async(req, res) => {
+    const password = 'Demba123';
+    const hashedPassword =  await bcrypt.hash(password, 10);
+    res.send(hashedPassword);
+})
+
+3)Stream Token test:
+const StreamChat = require('stream-chat').StreamChat;
+const {connect } = require('getstream');
+const crypto = require('crypto');
+const bcrypt = require('bcrypt');
+
+
+const STREAM_API_KEY = process.env.STREAM_API_KEY;
+const STREAM_API_SECRET = process.env.STREAM_API_SECRET;
+const STREAM_APP_ID = process.env.STREAM_APP_ID;
+
+
+app.get('/test', (req, res) => {
+    const userId = crypto.randomBytes(16).toString('hex');
+    //const password = 'Almuudo123';
+    //const hashedPassword = bcrypt.hashSync(password, 10);
+
+    const serverClient = connect(STREAM_API_KEY, STREAM_API_SECRET, STREAM_APP_ID);
+    
+    const token  = serverClient.createUserToken(userId);
+    res.send('userId: ' + userId + '\ntoken: ' + token);
+
+});
